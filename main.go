@@ -51,6 +51,7 @@ func main() {
 // var *string myName
 //myName is variable that holds the memory address of a string variable
 
+/*
 func main(){
 	a := 25
 	b := &a
@@ -58,3 +59,20 @@ func main(){
 	var c *(*int) = &b
 	fmt.Println(c)
 }
+*/
+
+func zero_my_int(x *int) {
+	*x = 0
+}
+func main(){
+	x := 5
+	zero_my_int(&x)
+	if x == 0 {
+		fmt.Println("Successfully zeroed")
+	} else {
+		fmt.Println("x is still 5")
+	}
+}
+
+
+
