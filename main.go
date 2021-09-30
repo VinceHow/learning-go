@@ -15,6 +15,7 @@ import "fmt"
 
 // explicit declaration
 
+/*
 func main() {
 	// INITIALISATION
 	var greeting string
@@ -28,4 +29,32 @@ func main() {
 	var myFloat float32 = 5.5555
 	fmt.Println(new_year + year)
 	fmt.Println(myFloat)
+}
+*/
+
+//pointers, holding the memory location of another variable
+
+//& has ONE meaning = the address of a variable that it is next to
+//a := 25
+//b := &a
+//B is now the value of the memory address of A, instead o A itself
+
+//* has TWO meanings
+//1. when it is next to a variable: get the value of the variable that this pointer is pointing to (DEREFERENCING)
+// a := 25
+// b := &a
+// c := *b
+// c is now 25, which is the value stored at address b
+//
+//
+//2. when * is next to a TYPE: this means the var being created is a POINTER, and the address is holding a TYPE following the *
+// var *string myName
+//myName is variable that holds the memory address of a string variable
+
+func main(){
+	a := 25
+	b := &a
+	fmt.Println(b)
+	var c *(*int) = &b
+	fmt.Println(c)
 }
