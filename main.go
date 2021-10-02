@@ -64,7 +64,7 @@ func main(){
 func zero_my_int(x *int) {
 	*x = 0
 }
-func main(){
+func main() {
 	x := 5
 	zero_my_int(&x)
 	if x == 0 {
@@ -73,6 +73,3 @@ func main(){
 		fmt.Println("x is still 5")
 	}
 }
-
-
-

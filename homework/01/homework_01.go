@@ -5,6 +5,36 @@ import (
 	"math"
 )
 
+func main() {
+	// Task #1: create a function to compute permutations and combinations
+	//Combination(50 , 5)
+
+	// Task #2: create FactorialArray
+	//FactorialArray(6)
+
+	// Task #3: create FibonacciArray
+	// FibonacciArray(20)
+
+	// Task #4: create MinArray
+	//MinArray([]int{10,20,-50})
+
+	//Task #5: create GCDArray
+	//GCDArray([]int{378,273})
+
+	// Task #6: IsPerfect
+	//IsPerfect(29)
+
+	// Task #7: NextPerfectNumber
+	//NextPerfectNumber(26)
+
+	// Task #8: ListPrimes
+	//mersennePrimes(ListPrimes(2, 61))
+
+	// Task #9: NextTwinPrimes
+	NextTwinPrimes(30)
+}
+
+//////////////////////////////////////////////////////////////////////////////
 func makeSlice(min int, max int) []int {
 	a := make([]int, max-min+1)
 	for i := range a {
@@ -65,15 +95,14 @@ func Combination(n int, k int) int64 {
 	numbersSlice := makeSlice(1, k)
 	var kFactorial int64
 	kFactorial = multiplySlice(numbersSlice)
-	combinations := permutations/kFactorial
+	combinations := permutations / kFactorial
 	fmt.Printf("The number of combinations is %v", combinations)
 	return combinations
 }
 
-
 func FactorialArray(n int) []int {
 	finalSlice := make([]int, n)
-	for i := 1; i <= n ; i++ {
+	for i := 1; i <= n; i++ {
 		if i == 1 {
 			finalSlice[0] = 1
 		} else {
@@ -85,8 +114,8 @@ func FactorialArray(n int) []int {
 }
 
 func FibonacciArray(n int) []int {
-	finalSlice := make([]int ,n)
-	for i:= 1; i<=n; i++ {
+	finalSlice := make([]int, n)
+	for i := 1; i <= n; i++ {
 		if i <= 2 {
 			finalSlice[i-1] = 1
 		} else {
@@ -122,13 +151,13 @@ func MaxArray(x []int) int {
 	return biggestInt
 }
 
-func indexOf(element int, data []int) (int) {
+func indexOf(element int, data []int) int {
 	for k, v := range data {
 		if element == v {
 			return k
 		}
 	}
-	return -1    //not found.
+	return -1 //not found.
 }
 
 func GCDArray(x []int) int {
@@ -149,7 +178,7 @@ func IsPerfect(x int) bool {
 	allNumbers := makeSlice(1, x/2) // not a divisor of itself
 	var divisors []int
 	for _, v := range allNumbers {
-		if x % v == 0 {
+		if x%v == 0 {
 			divisors = append(divisors, v)
 		}
 	}
@@ -158,7 +187,7 @@ func IsPerfect(x int) bool {
 		sumDivisors += v
 	}
 	var isPerfect bool = sumDivisors == x
-	fmt.Printf("Integer %v is a perfect number: %v \n", x , isPerfect)
+	fmt.Printf("Integer %v is a perfect number: %v \n", x, isPerfect)
 	return isPerfect
 }
 
@@ -185,7 +214,7 @@ func IsPrime(p int64) bool {
 }
 
 func ListPrimes(x1 int, x2 int) []int {
-	numberSlice := makeSlice(x1,x2)
+	numberSlice := makeSlice(x1, x2)
 	var primeSlice []int
 	for _, v := range numberSlice {
 		if IsPrime(int64(v)) {
@@ -198,8 +227,8 @@ func ListPrimes(x1 int, x2 int) []int {
 
 func mersennePrimes(x []int) []int64 {
 	var primeSlice []int64
-	for _,v := range x {
-		var testNumber int64 = int64(math.Pow(2, float64(v))) -1
+	for _, v := range x {
+		var testNumber int64 = int64(math.Pow(2, float64(v))) - 1
 		fmt.Printf("Test number: %v \n", testNumber)
 		if IsPrime(testNumber) {
 			primeSlice = append(primeSlice, testNumber)
@@ -219,43 +248,11 @@ func twinTest(x [2]int64) bool {
 
 func NextTwinPrimes(x int64) [2]int64 {
 	// find next prime number
-	x ++
-	for twinTest([2]int64{x,x+2}) == false {
+	x++
+	for twinTest([2]int64{x, x + 2}) == false {
 		x++
 	}
-	twinPrime := [2]int64{x,x+2}
+	twinPrime := [2]int64{x, x + 2}
 	fmt.Println("Twin prime found:", twinPrime)
 	return twinPrime
 }
-
-func main() {
-	// Task #1: create a function to compute permutations and combinations
-	//Combination(50 , 5)
-
-	// Task #2: create FactorialArray
-	//FactorialArray(6)
-
-	// Task #3: create FibonacciArray
-	// FibonacciArray(20)
-
-	// Task #4: create MinArray
-	//MinArray([]int{10,20,-50})
-
-	//Task #5: create GCDArray
-	//GCDArray([]int{378,273})
-
-	// Task #6: IsPerfect
-	//IsPerfect(29)
-
-	// Task #7: NextPerfectNumber
-	//NextPerfectNumber(26)
-
-	// Task #8: ListPrimes
-	//mersennePrimes(ListPrimes(2, 61))
-
-	// Task #9: NextTwinPrimes
-	NextTwinPrimes(13)
-}
-
-
-
