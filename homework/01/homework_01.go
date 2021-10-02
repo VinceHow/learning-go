@@ -69,8 +69,60 @@ func Combination(n int, k int) int64 {
 	return combinations
 }
 
+
+func FactorialArray(n int) []int {
+	finalSlice := make([]int, n)
+	for i := 1; i <= n ; i++ {
+		if i == 1 {
+			finalSlice[0] = 1
+		} else {
+			finalSlice[i-1] = finalSlice[i-2] * i
+		}
+	}
+	fmt.Println(finalSlice)
+	return finalSlice
+}
+
+func FibonacciArray(n int) []int {
+	finalSlice := make([]int ,n)
+	for i:= 1; i<=n; i++ {
+		if i <= 2 {
+			finalSlice[i-1] = 1
+		} else {
+			var sumSlice int
+			sumSlice += finalSlice[i-3]
+			sumSlice += finalSlice[i-2]
+			finalSlice[i-1] = sumSlice
+		}
+	}
+	fmt.Println(finalSlice)
+	return finalSlice
+}
+
+func MinArray(x []int) int {
+	smallestInt := x[0]
+	for i := range x {
+		if smallestInt > x[i] {
+			smallestInt = x[i]
+		}
+	}
+	fmt.Println("Smallest int is", smallestInt)
+	return smallestInt
+}
+
+
 func main() {
-	Combination(50 , 5)
+	// Task #1: create a function to compute permutations and combinations
+	//Combination(50 , 5)
+
+	// Task #2: create FactorialArray
+	//FactorialArray(6)
+
+	// Task #3: create FibonacciArray
+	// FibonacciArray(20)
+
+	// Task #4: create MinArray
+	MinArray([]int{10,20,-50})
 }
 
 
