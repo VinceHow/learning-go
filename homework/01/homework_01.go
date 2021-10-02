@@ -144,6 +144,31 @@ func GCDArray(x []int) int {
 	return max
 }
 
+func IsPerfect(x int) bool {
+	allNumbers := makeSlice(1, x/2) // not a divisor of itself
+	var divisors []int
+	for _, v := range allNumbers {
+		if x % v == 0 {
+			divisors = append(divisors, v)
+		}
+	}
+	var sumDivisors int = 0
+	for _, v := range divisors {
+		sumDivisors += v
+	}
+	var isPerfect bool = sumDivisors == x
+	fmt.Printf("Integer %v is a perfect number: %v", x , isPerfect)
+	return isPerfect
+}
+
+func NextPerfectNumber(x int) int {
+	x += 1 // if x is perfect, we want to find the next one
+	for IsPerfect(x) != true {
+		x += 1
+	}
+	return x
+}
+
 func main() {
 	// Task #1: create a function to compute permutations and combinations
 	//Combination(50 , 5)
@@ -158,7 +183,14 @@ func main() {
 	//MinArray([]int{10,20,-50})
 
 	//Task #5: create GCDArray
-	GCDArray([]int{378,273})
+	//GCDArray([]int{378,273})
+
+	// Task #6: IsPerfect
+	//IsPerfect(29)
+
+	// Task #7: NextPerfectNumber
+	NextPerfectNumber(8128)
+
 }
 
 
