@@ -209,6 +209,25 @@ func mersennePrimes(x []int) []int64 {
 	return primeSlice
 }
 
+func twinTest(x [2]int64) bool {
+	if IsPrime(x[0]) && IsPrime(x[1]) {
+		return true
+	} else {
+		return false
+	}
+}
+
+func NextTwinPrimes(x int64) [2]int64 {
+	// find next prime number
+	x ++
+	for twinTest([2]int64{x,x+2}) == false {
+		x++
+	}
+	twinPrime := [2]int64{x,x+2}
+	fmt.Println("Twin prime found:", twinPrime)
+	return twinPrime
+}
+
 func main() {
 	// Task #1: create a function to compute permutations and combinations
 	//Combination(50 , 5)
@@ -232,8 +251,10 @@ func main() {
 	//NextPerfectNumber(26)
 
 	// Task #8: ListPrimes
-	mersennePrimes(ListPrimes(2, 61))
+	//mersennePrimes(ListPrimes(2, 61))
 
+	// Task #9: NextTwinPrimes
+	NextTwinPrimes(13)
 }
 
 
