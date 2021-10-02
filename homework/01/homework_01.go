@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func makeSlice(min int, max int) []int {
@@ -157,16 +158,55 @@ func IsPerfect(x int) bool {
 		sumDivisors += v
 	}
 	var isPerfect bool = sumDivisors == x
-	fmt.Printf("Integer %v is a perfect number: %v", x , isPerfect)
+	fmt.Printf("Integer %v is a perfect number: %v \n", x , isPerfect)
 	return isPerfect
 }
 
 func NextPerfectNumber(x int) int {
-	x += 1 // if x is perfect, we want to find the next one
+	x += 1 // even if x is perfect, we want to find the next one
 	for IsPerfect(x) != true {
 		x += 1
 	}
 	return x
+}
+
+func IsPrime(p int64) bool {
+	var k int64 = 2
+	var root float64 = math.Sqrt(float64(p))
+	for float64(k) <= root {
+		if p%k == 0 { // p is not prime
+			return false
+		} else {
+			k++
+		}
+	}
+	// if we survive testing all these factors then p is prime
+	return true
+}
+
+func ListPrimes(x1 int, x2 int) []int {
+	numberSlice := makeSlice(x1,x2)
+	var primeSlice []int
+	for _, v := range numberSlice {
+		if IsPrime(int64(v)) {
+			primeSlice = append(primeSlice, v)
+		}
+	}
+	fmt.Println(primeSlice)
+	return primeSlice
+}
+
+func mersennePrimes(x []int) []int64 {
+	var primeSlice []int64
+	for _,v := range x {
+		var testNumber int64 = int64(math.Pow(2, float64(v))) -1
+		fmt.Printf("Test number: %v \n", testNumber)
+		if IsPrime(testNumber) {
+			primeSlice = append(primeSlice, testNumber)
+		}
+	}
+	fmt.Println(primeSlice)
+	return primeSlice
 }
 
 func main() {
@@ -189,7 +229,10 @@ func main() {
 	//IsPerfect(29)
 
 	// Task #7: NextPerfectNumber
-	NextPerfectNumber(8128)
+	//NextPerfectNumber(26)
+
+	// Task #8: ListPrimes
+	mersennePrimes(ListPrimes(2, 61))
 
 }
 
