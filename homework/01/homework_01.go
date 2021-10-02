@@ -106,10 +106,43 @@ func MinArray(x []int) int {
 			smallestInt = x[i]
 		}
 	}
-	fmt.Println("Smallest int is", smallestInt)
+	//fmt.Println("Smallest int is", smallestInt)
 	return smallestInt
 }
 
+func MaxArray(x []int) int {
+	biggestInt := x[0]
+	for i := range x {
+		if biggestInt < x[i] {
+			biggestInt = x[i]
+		}
+	}
+	//fmt.Println("Biggest int is", biggestInt)
+	return biggestInt
+}
+
+func indexOf(element int, data []int) (int) {
+	for k, v := range data {
+		if element == v {
+			return k
+		}
+	}
+	return -1    //not found.
+}
+
+func GCDArray(x []int) int {
+	max := MaxArray(x)
+	min := MinArray(x)
+	for max != min {
+		maxIndex := indexOf(max, x)
+		dif := max - min
+		x[maxIndex] = dif
+		max = MaxArray(x)
+		min = MinArray(x)
+	}
+	fmt.Println("GCD is", max)
+	return max
+}
 
 func main() {
 	// Task #1: create a function to compute permutations and combinations
@@ -122,7 +155,10 @@ func main() {
 	// FibonacciArray(20)
 
 	// Task #4: create MinArray
-	MinArray([]int{10,20,-50})
+	//MinArray([]int{10,20,-50})
+
+	//Task #5: create GCDArray
+	GCDArray([]int{378,273})
 }
 
 
