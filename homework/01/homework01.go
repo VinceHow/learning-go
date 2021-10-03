@@ -1,12 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 	//PatternCount("CGATATATCCATAG", "ATA")
 	//FrequentWords("CGATATATCCATAG", 2)
 	//FrequencyTable("CGATATATCCATAG", 3)
-	BetterFrequentWords("CGATATATCCATAG", 3)
+	//BetterFrequentWords("CGATATATCCATAG", 3)
+	//Reverse("abc")
+	//Complement("CGATATATCCATAG")
+	ReverseComplement("ATGATCAAG")
 }
 
 func PatternCount(x1 string, x2 string) int {
@@ -103,6 +109,34 @@ func BetterFrequentWords(x string, k int) []string {
 	return frequentPatterns
 }
 
+func Reverse(x string) string {
+	lenText := len(x)
+	var newText string
+	for i := lenText-1; i >= 0; i--{
+		newText = newText + string(x[i])
+	}
+	return newText
+}
+
+func Complement(x string) string {
+	var newText string
+	complementMap := map[string]string{
+		"a":"t",
+		"t":"a",
+		"c":"g",
+		"g":"c",
+	}
+	for _,v := range x {
+		newText = newText + complementMap[strings.ToLower(string(v))]
+	}
+	return newText
+}
+
+func ReverseComplement(x string) string{
+	newText := Reverse(Complement(x))
+	fmt.Println(newText)
+	return newText
+}
 
 
 
