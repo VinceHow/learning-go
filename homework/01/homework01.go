@@ -12,20 +12,14 @@ func main() {
 	//BetterFrequentWords("CGATATATCCATAG", 3)
 	//Reverse("abc")
 	//Complement("CGATATATCCATAG")
-	ReverseComplement("ATGATCAAG")
+	//ReverseComplement("ATGATCAAG")
+	//StartingIndices("CGATATATCCATAG", "ATA")
+	FindClumps()
 }
 
 func PatternCount(x1 string, x2 string) int {
-	matchCount := 0
-	lenSubString := len(x2)
-	for i := 0; i <= (len(x1)-lenSubString); i++ {
-		subString := x1[i:i+lenSubString]
-		if subString == x2 {
-			matchCount ++
-		}
-	}
-	//fmt.Println("Number of matches =", matchCount)
-	return matchCount
+	positions := StartingIndices(x1,x2)
+	return len(positions)
 }
 
 func FrequentWords(x string, k int) []string {
@@ -138,6 +132,39 @@ func ReverseComplement(x string) string{
 	return newText
 }
 
+func StartingIndices(x string, k string) []int{
+	var positionSlice []int
+	lenText := len(x)
+	for i := 0; i<= lenText-len(k); i++ {
+		if x[i:i+len(k)] == k {
+			positionSlice = append(positionSlice, i)
+		}
+	}
+	fmt.Println(positionSlice)
+	return positionSlice
+}
+
+func FindClumps(x string, k int, L int, t int) []string {
+	/*
+	x = original genome
+	k = length of pattern to find
+	L = sliding window of capture
+	t = min number of occurrence of pattern string within the window
+	 */
+	var patternsFound []string
+	n := len(x)
+	for i := 0; i <= n-L; i++ {
+		window := x[i:i+L]
+		freqMap := FrequencyTable(window, k)
+		for k, v := range freqMap {
+			if v >= t && Contains(patternsFound, k) {
+				patternsFound = append(patternsFound, k)
+			}
+		}
+	}
+	fmt.Println(patternsFound)
+	return patternsFound
+}
 
 
 
