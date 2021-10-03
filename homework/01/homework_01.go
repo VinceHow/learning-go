@@ -14,7 +14,9 @@ func main() {
 	//Complement("CGATATATCCATAG")
 	//ReverseComplement("ATGATCAAG")
 	//StartingIndices("CGATATATCCATAG", "ATA")
-	FindClumps("CGATATATCCATAG", 3,8,2)
+	//FindClumps("CGATATATCCATAG", 3,8,2)
+	//SkewArray("CGATATATCCATAG")
+	MinimumSkew("CGATATATCCATAG")
 }
 
 func PatternCount(x1 string, x2 string) int {
@@ -164,6 +166,51 @@ func FindClumps(x string, k int, L int, t int) []string {
 	}
 	fmt.Println(patternsFound)
 	return patternsFound
+}
+
+func Skew(x string) int{
+	if strings.ToLower(x) == "g" {
+		return 1
+	} else if strings.ToLower(x) == "c" {
+		return -1
+	} else {
+		return 0
+	}
+}
+
+func SkewArray(x string) []int {
+	n := len(x)
+	var skewArray []int
+	skewArray = append(skewArray, 0)
+	for i := 1; i <= n; i++ {
+		skewArray = append(skewArray, skewArray[i-1] + Skew(string(x[i-1])))
+	}
+	fmt.Println(skewArray)
+	return skewArray
+}
+
+func MinArray(x []int) int {
+	smallestInt := x[0]
+	for i := range x {
+		if smallestInt > x[i] {
+			smallestInt = x[i]
+		}
+	}
+	//fmt.Println("Smallest int is", smallestInt)
+	return smallestInt
+}
+
+func MinimumSkew(x string) []int {
+	var indices []int
+	skewArray := SkewArray(x)
+	min := MinArray(skewArray)
+	for i := 0; i< len(skewArray); i++ {
+		if skewArray[i] == min {
+			indices = append(indices, i)
+		}
+	}
+	fmt.Println(indices)
+	return indices
 }
 
 
