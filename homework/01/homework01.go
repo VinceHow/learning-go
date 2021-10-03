@@ -14,7 +14,7 @@ func main() {
 	//Complement("CGATATATCCATAG")
 	//ReverseComplement("ATGATCAAG")
 	//StartingIndices("CGATATATCCATAG", "ATA")
-	FindClumps()
+	FindClumps("CGATATATCCATAG", 3,8,2)
 }
 
 func PatternCount(x1 string, x2 string) int {
@@ -157,7 +157,7 @@ func FindClumps(x string, k int, L int, t int) []string {
 		window := x[i:i+L]
 		freqMap := FrequencyTable(window, k)
 		for k, v := range freqMap {
-			if v >= t && Contains(patternsFound, k) {
+			if v >= t && Contains(patternsFound, k) == false {
 				patternsFound = append(patternsFound, k)
 			}
 		}
