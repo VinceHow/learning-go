@@ -20,15 +20,18 @@ func main() {
 
 
 	// #1 WeightedDie
-	fmt.Println(WeightedDie())
+	//fmt.Println(WeightedDie())
 
 	// #2
 	//TrivialGCD(4,8)
 	//compareSingleRun(100,50)
-	compareMultipleRuns(1000, 2000, 10)
-	compareMultipleRuns(10000, 20000, 10)
-	compareMultipleRuns(100000, 200000, 10)
-	compareMultipleRuns(1000000, 2000000, 10)
+	//compareMultipleRuns(1000, 2000, 10)
+	//compareMultipleRuns(10000, 20000, 10)
+	//compareMultipleRuns(100000, 200000, 10)
+	//compareMultipleRuns(1000000, 2000000, 10)
+
+	// #3
+	RelativelyPrimeProbability(1000, 2000, 500)
 }
 
 
@@ -255,3 +258,30 @@ func compareMultipleRuns(lower int, upper int, n int) [2]float64 {
 	fmt.Printf("AVG Euclid run time: %v \nAVG Trivial run time: %v \n", avgRunResults[0], avgRunResults[1])
 	return avgRunResults
 }
+
+
+func RelativelyPrimeProbability(lower int, upper int, n int) float64 {
+	relativePrimeCount := 0
+	for i := 1; i <= n; i++ {
+		rand.Seed(time.Now().UnixNano())
+		x := rand.Intn(upper - lower) + lower
+		rand.Seed(time.Now().UnixNano())
+		y := rand.Intn(upper - lower) + lower
+		if isRelativePrime(x, y) {
+			relativePrimeCount ++
+		}
+	}
+	var probRelativePrime float64 = float64(relativePrimeCount) / float64(n)
+	fmt.Printf("Proba of a random pair of numbers in the range %v - %v being relatively prime: %v", lower, upper, probRelativePrime)
+	return probRelativePrime
+}
+
+func isRelativePrime(x int, y int) bool {
+	if EuclidGCD(x,y) == 1 {
+		return true
+	} else {
+		return false
+	}
+}
+
+
