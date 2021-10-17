@@ -31,7 +31,13 @@ func main() {
 	//compareMultipleRuns(1000000, 2000000, 10)
 
 	// #3
-	RelativelyPrimeProbability(1000, 2000, 500)
+	//RelativelyPrimeProbability(1000, 2000, 500)
+
+	// #4
+	fmt.Println(HasRepeat([]int{1,2,3,4,6,7,8,8}))
+	fmt.Println(HasRepeat([]int{1,2,3,4,6,7,8}))
+	// #5
+
 }
 
 
@@ -284,4 +290,24 @@ func isRelativePrime(x int, y int) bool {
 	}
 }
 
+func contains(s []int, str int) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+	return false
+}
 
+func HasRepeat(x []int) bool {
+	var numbers []int
+	for i := range x {
+		// add one to the count if int already seen before
+		if contains(numbers, x[i]) {
+			return true
+		} else {
+			numbers = append(numbers, x[i])
+		}
+	}
+	return false
+}
