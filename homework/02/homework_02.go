@@ -34,9 +34,12 @@ func main() {
 	//RelativelyPrimeProbability(1000, 2000, 500)
 
 	// #4
-	fmt.Println(HasRepeat([]int{1,2,3,4,6,7,8,8}))
-	fmt.Println(HasRepeat([]int{1,2,3,4,6,7,8}))
+	//fmt.Println(HasRepeat([]int{1,2,3,4,6,7,8,8}))
+	//fmt.Println(HasRepeat([]int{1,2,3,4,6,7,8}))
+
 	// #5
+	BirthdayParadox(24, 1000)
+
 
 }
 
@@ -255,7 +258,6 @@ func compareMultipleRuns(lower int, upper int, n int) [2]float64 {
 	for run := 1; run <= n; run ++ {
 		rand.Seed(time.Now().UnixNano())
 		x := rand.Intn(upper - lower) + lower
-		rand.Seed(time.Now().UnixNano())
 		y := rand.Intn(upper - lower) + lower
 		singleRun := compareSingleRun(x,y)
 		runResults = append(runResults, singleRun)
@@ -271,7 +273,6 @@ func RelativelyPrimeProbability(lower int, upper int, n int) float64 {
 	for i := 1; i <= n; i++ {
 		rand.Seed(time.Now().UnixNano())
 		x := rand.Intn(upper - lower) + lower
-		rand.Seed(time.Now().UnixNano())
 		y := rand.Intn(upper - lower) + lower
 		if isRelativePrime(x, y) {
 			relativePrimeCount ++
@@ -311,3 +312,26 @@ func HasRepeat(x []int) bool {
 	}
 	return false
 }
+
+func BirthdayParadox(numPeople int, numTrials int) float64 {
+	repeats := 0
+	for run := 1; run <= numTrials; run++ {
+		// generate n random numbers between 1 - 365
+		var birthdays []int
+		for i := 0; i < numPeople; i++ {
+			rand.Seed(time.Now().UnixNano())
+			birthday := rand.Intn(365) + 1
+			birthdays = append(birthdays, birthday)
+		}
+		if HasRepeat(birthdays) {
+			repeats ++
+		}
+	}
+	proba :=  float64(repeats) / float64(numTrials)
+	fmt.Printf("With %v people in the room, the prob of having at least two people sharing the same birthday is %v", numPeople, proba)
+	return proba
+}
+
+
+
+
