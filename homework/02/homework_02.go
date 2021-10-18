@@ -38,7 +38,10 @@ func main() {
 	//fmt.Println(HasRepeat([]int{1,2,3,4,6,7,8}))
 
 	// #5
-	BirthdayParadox(24, 1000)
+	//BirthdayParadox(24, 1000)
+
+	// #6
+	ComputePeriodLength([]int{1,2,1,2,1})
 
 
 }
@@ -303,7 +306,7 @@ func contains(s []int, str int) bool {
 func HasRepeat(x []int) bool {
 	var numbers []int
 	for i := range x {
-		// add one to the count if int already seen before
+		// check if number has been seen before
 		if contains(numbers, x[i]) {
 			return true
 		} else {
@@ -332,6 +335,71 @@ func BirthdayParadox(numPeople int, numTrials int) float64 {
 	return proba
 }
 
+
+func ComputePeriodLength(x []int) int {
+	/* I'm not sure that I understood the goal correctly, but I'm assuming that it means:
+	1. take a list, determine whether it had repeated numbers
+	2. check if the repeated numbers form a repeated segment of number
+	3. capture the repeated segment, and return its length
+
+	I am basing the above on the definition here: https://www.expii.com/t/periodic-sequences-definition-examples-4348#:~:text=The%20period%20of%20a%20sequence,be%20a%20positive%20whole%20number.
+	In order words:
+	- This is a periodic sequence: 1,1,2,1,1,2 (period = 3)
+	- This is NOT a periodic sequence: 1,2,2,2,2,2
+	- This is NOT a periodic sequence: 1,1,2,2,1,1
+	*/
+	if HasRepeat(x) {
+		/*
+		1. take the first number and find the indices of all its repeats, these are the potential periods for us to test
+		2. add the potential periods to the second number, to see if it's also a repeat
+		3. repeat step 2 for all numbers captured in the period
+		4. the full cycle must be observed continuously twice
+		*/
+		var potentialPeriods []int
+		for i := range x {
+			// check if number has been seen before
+			if x[i] == x[0] && i != 0{
+				potentialPeriods = append(potentialPeriods, i)
+			}
+		}
+		fmt.Println("Potential periods:", potentialPeriods)
+
+		// test and eliminate potential periods
+		validatedPeriods := potentialPeriods
+		for i := range potentialPeriods {
+			periodToTest := potentialPeriods[i]
+			for numberInPattern := 0; numberInPattern < periodToTest; numberInPattern++ {
+				var locationsToValidate []int
+				numberToFind := x[numberInPattern]
+				for multiple := 1;  (numberInPattern)+(multiple*periodToTest) < len(x)-1; multiple ++ {
+					locationsToValidate = append(locationsToValidate, (numberInPattern+1)+(multiple*periodToTest))
+				}
+				fmt.Printf("Testing to see if %v exists at the following locations %v\n", numberToFind, locationsToValidate)
+				for location := range locationsToValidate {
+					if numberToFind != x[locationsToValidate[location]] {
+						validatedPeriods[i] = -1
+					}
+				}
+			}
+		}
+
+		// find the smallest validated period length and return
+		var final []int
+		for i := range validatedPeriods {
+			if validatedPeriods[i] >= 1  && (validatedPeriods[i] * 2) <= len(x){
+				// must have seen as least 2 cycles
+				final = append(final, validatedPeriods[i])
+			}
+		}
+		if len(final) != 0 {
+			fmt.Println("All valid periods:", final, "\n")
+			return GCD.MinArray(final)
+		} else {
+			fmt.Println("No valid period found")
+		}
+	}
+	return 0 // 0 if no period was found
+}
 
 
 
