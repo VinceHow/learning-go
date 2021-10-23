@@ -18,7 +18,6 @@ func main() {
 	//testElectoralVotes := map[string]int{"A":10, "B":15}
 	//SimulateMultipleElections(testPolls, testElectoralVotes, 1, 0.1)
 
-
 	// #1 WeightedDie
 	//fmt.Println(WeightedDie())
 
@@ -41,35 +40,33 @@ func main() {
 	//BirthdayParadox(24, 1000)
 
 	// #6
-	ComputePeriodLength([]int{1,2,1,2,1})
-
+	ComputePeriodLength([]int{1, 2, 3, 4, 5})
 
 }
-
 
 func PlayCrapsOnce() bool {
 	round := 1
 	point := 0
 	score := SumTwoDice()
 	// player wins
-	for _, v := range [2]int{7,11} {
+	for _, v := range [2]int{7, 11} {
 		if score == v {
 			//fmt.Println("Player wins during round number", round-1)
 			return true
 		}
 	}
 	// house wins
-	for _, v := range [3]int{2,3,12} {
+	for _, v := range [3]int{2, 3, 12} {
 		if score == v {
 			//fmt.Println("House wins during round number", round-1)
 			return false
 		}
-	// carry playing
-	point = score
-	round ++
+		// carry playing
+		point = score
+		round++
 	}
 	for round > 1 {
-		round ++
+		round++
 		score := SumTwoDice()
 		if score == point { // player wins
 			//fmt.Println("Player wins during round number", round-1)
@@ -111,27 +108,26 @@ func RollWeightedDie() int {
 	return -1
 }
 
-func ComputeHouseEdge(n int) float64{
+func ComputeHouseEdge(n int) float64 {
 	countWins := 0
-	for i := 1; i <= n; i++{
+	for i := 1; i <= n; i++ {
 		outcome := PlayCrapsOnce()
 		if !outcome {
-			countWins ++
+			countWins++
 		} else {
-			countWins --
+			countWins--
 		}
 	}
-	edge := float64(countWins)/float64(n)
+	edge := float64(countWins) / float64(n)
 	fmt.Println("House edge is", edge)
 	return edge
 }
 
-
 func AddNoise(poll float64, marginOfError float64) float64 {
 	x := rand.NormFloat64()
-	x = x/2
-	x = x*marginOfError
-	return x+poll
+	x = x / 2
+	x = x * marginOfError
+	return x + poll
 }
 
 func SimulateOneElection(polls map[string]float64, electoralVotes map[string]int, marginOfError float64) [2]int {
@@ -146,35 +142,33 @@ func SimulateOneElection(polls map[string]float64, electoralVotes map[string]int
 			votes2 += electoralVotes[k]
 		}
 	}
-	result := [2]int{votes1,votes2}
+	result := [2]int{votes1, votes2}
 	return result
 }
-
 
 func SimulateMultipleElections(polls map[string]float64, electoralVotes map[string]int, numTrials int, marginOfError float64) [3]float64 {
 	winCount1 := 0
 	winCount2 := 0
 	tieCount := 0
-	for i := 1; 1<= numTrials; i++ {
+	for i := 1; 1 <= numTrials; i++ {
 		electionVotes := SimulateOneElection(polls, electoralVotes, marginOfError)
 		votes1 := electionVotes[0]
 		votes2 := electionVotes[1]
 		if votes1 > votes2 {
-			winCount1 ++
+			winCount1++
 			//fmt.Println("1 win")
 		} else if votes2 > votes1 {
-			winCount2 ++
+			winCount2++
 		} else {
-			tieCount ++
+			tieCount++
 		}
 	}
-	probability1 := float64(winCount1)/float64(numTrials)
-	probability2 := float64(winCount2)/float64(numTrials)
-	probabilityTie := float64(tieCount)/float64(numTrials)
-	fmt.Printf("Proba of 1 winning = %v; 2 winning = %v; tie = %v",probability1,	probability2, probabilityTie )
+	probability1 := float64(winCount1) / float64(numTrials)
+	probability2 := float64(winCount2) / float64(numTrials)
+	probabilityTie := float64(tieCount) / float64(numTrials)
+	fmt.Printf("Proba of 1 winning = %v; 2 winning = %v; tie = %v", probability1, probability2, probabilityTie)
 	return [3]float64{probability1, probability2, probabilityTie}
 }
-
 
 func WeightedDie() int {
 	randomNumber := rand.Float32()
@@ -194,11 +188,11 @@ func WeightedDie() int {
 	return -1
 }
 
-func TrivialGCD(x int, y int) int{
+func TrivialGCD(x int, y int) int {
 	// in the first lesson, I didn't actually write the trivial solution, so I am creating it from scratch
 	var commonDividers []int
-	for i := 1; i <= int(math.Min(float64(x),float64(y))); i++ {
-		if x%i == 0 && y%i ==0{
+	for i := 1; i <= int(math.Min(float64(x), float64(y))); i++ {
+		if x%i == 0 && y%i == 0 {
 			commonDividers = append(commonDividers, i)
 		}
 	}
@@ -207,26 +201,25 @@ func TrivialGCD(x int, y int) int{
 	return result
 }
 
-
 func EuclidGCD(x int, y int) int {
 	GCD := 1
-	for x != y{
+	for x != y {
 		if x > y {
-			x = x-y
+			x = x - y
 		} else {
-			y = y-x
+			y = y - x
 		}
 	}
 	GCD = x
 	return GCD
 }
 
-func compareSingleRun(x int, y int) [2]float64{
+func compareSingleRun(x int, y int) [2]float64 {
 	start1 := time.Now()
-	EuclidGCD(x,y)
+	EuclidGCD(x, y)
 	elapsed1 := float64(time.Since(start1))
 	start2 := time.Now()
-	TrivialGCD(x,y)
+	TrivialGCD(x, y)
 	elapsed2 := float64(time.Since(start2))
 	comp := [2]float64{elapsed1, elapsed2}
 	//fmt.Println(comp)
@@ -236,7 +229,7 @@ func compareSingleRun(x int, y int) [2]float64{
 func avgRunTime(runs [][2]float64) [2]float64 {
 	var EuclidGCDRuns []float64
 	var TrivialGCDRuns []float64
-	for i := range runs{
+	for i := range runs {
 		EuclidGCDRuns = append(EuclidGCDRuns, runs[i][0])
 		TrivialGCDRuns = append(TrivialGCDRuns, runs[i][1])
 	}
@@ -258,11 +251,11 @@ func compareMultipleRuns(lower int, upper int, n int) [2]float64 {
 	// takes n pairs of random numbers within the two bounds then find their GCD using the two methods. Record the avg speed of the n runs by each method
 	fmt.Printf("Simulating %v runs for numbers between %v - %v \n", n, lower, upper)
 	var runResults [][2]float64
-	for run := 1; run <= n; run ++ {
+	for run := 1; run <= n; run++ {
 		rand.Seed(time.Now().UnixNano())
-		x := rand.Intn(upper - lower) + lower
-		y := rand.Intn(upper - lower) + lower
-		singleRun := compareSingleRun(x,y)
+		x := rand.Intn(upper-lower) + lower
+		y := rand.Intn(upper-lower) + lower
+		singleRun := compareSingleRun(x, y)
 		runResults = append(runResults, singleRun)
 	}
 	avgRunResults := avgRunTime(runResults)
@@ -270,15 +263,14 @@ func compareMultipleRuns(lower int, upper int, n int) [2]float64 {
 	return avgRunResults
 }
 
-
 func RelativelyPrimeProbability(lower int, upper int, n int) float64 {
 	relativePrimeCount := 0
 	for i := 1; i <= n; i++ {
 		rand.Seed(time.Now().UnixNano())
-		x := rand.Intn(upper - lower) + lower
-		y := rand.Intn(upper - lower) + lower
+		x := rand.Intn(upper-lower) + lower
+		y := rand.Intn(upper-lower) + lower
 		if isRelativePrime(x, y) {
-			relativePrimeCount ++
+			relativePrimeCount++
 		}
 	}
 	var probRelativePrime float64 = float64(relativePrimeCount) / float64(n)
@@ -287,7 +279,7 @@ func RelativelyPrimeProbability(lower int, upper int, n int) float64 {
 }
 
 func isRelativePrime(x int, y int) bool {
-	if EuclidGCD(x,y) == 1 {
+	if EuclidGCD(x, y) == 1 {
 		return true
 	} else {
 		return false
@@ -327,16 +319,15 @@ func BirthdayParadox(numPeople int, numTrials int) float64 {
 			birthdays = append(birthdays, birthday)
 		}
 		if HasRepeat(birthdays) {
-			repeats ++
+			repeats++
 		}
 	}
-	proba :=  float64(repeats) / float64(numTrials)
+	proba := float64(repeats) / float64(numTrials)
 	fmt.Printf("With %v people in the room, the prob of having at least two people sharing the same birthday is %v", numPeople, proba)
 	return proba
 }
 
-
-func ComputePeriodLength(x []int) int {
+func RealComputePeriodLength(x []int) int {
 	/* I'm not sure that I understood the goal correctly, but I'm assuming that it means:
 	1. take a list, determine whether it had repeated numbers
 	2. check if the repeated numbers form a repeated segment of number
@@ -346,19 +337,19 @@ func ComputePeriodLength(x []int) int {
 	In order words:
 	- This is a periodic sequence: 1,1,2,1,1,2 (period = 3)
 	- This is NOT a periodic sequence: 1,2,2,2,2,2
-	- This is NOT a periodic sequence: 1,1,2,2,1,1
+	- This is NOT a periodic sequence: 1,2,3,1,2
 	*/
 	if HasRepeat(x) {
 		/*
-		1. take the first number and find the indices of all its repeats, these are the potential periods for us to test
-		2. add the potential periods to the second number, to see if it's also a repeat
-		3. repeat step 2 for all numbers captured in the period
-		4. the full cycle must be observed continuously twice
+			1. take the first number and find the indices of all its repeats, these are the potential periods for us to test
+			2. add the potential periods to the second number, to see if it's also a repeat
+			3. repeat step 2 for all numbers captured in the period
+			4. the full cycle must be observed continuously twice
 		*/
 		var potentialPeriods []int
 		for i := range x {
 			// check if number has been seen before
-			if x[i] == x[0] && i != 0{
+			if x[i] == x[0] && i != 0 {
 				potentialPeriods = append(potentialPeriods, i)
 			}
 		}
@@ -371,7 +362,7 @@ func ComputePeriodLength(x []int) int {
 			for numberInPattern := 0; numberInPattern < periodToTest; numberInPattern++ {
 				var locationsToValidate []int
 				numberToFind := x[numberInPattern]
-				for multiple := 1;  (numberInPattern)+(multiple*periodToTest) < len(x)-1; multiple ++ {
+				for multiple := 1; (numberInPattern)+(multiple*periodToTest) < len(x)-1; multiple++ {
 					locationsToValidate = append(locationsToValidate, (numberInPattern+1)+(multiple*periodToTest))
 				}
 				fmt.Printf("Testing to see if %v exists at the following locations %v\n", numberToFind, locationsToValidate)
@@ -386,7 +377,7 @@ func ComputePeriodLength(x []int) int {
 		// find the smallest validated period length and return
 		var final []int
 		for i := range validatedPeriods {
-			if validatedPeriods[i] >= 1  && (validatedPeriods[i] * 2) <= len(x){
+			if validatedPeriods[i] >= 1 && (validatedPeriods[i]*2) <= len(x) {
 				// must have seen as least 2 cycles
 				final = append(final, validatedPeriods[i])
 			}
@@ -401,5 +392,25 @@ func ComputePeriodLength(x []int) int {
 	return 0 // 0 if no period was found
 }
 
+func ComputePeriodLength(x []int) int {
+	// maps unique numbers to the first index that they were seen
+	numbersIndex := make(map[int]int)
+	for i := range x {
+		// check if number has been added to map already
+		if _, ok := numbersIndex[x[i]]; ok {
+			// if number has been seen, compute period
+			firstAppearance := numbersIndex[x[i]]
+			period := i - firstAppearance
+			fmt.Println("First period found has length:", period)
+			return period
+		} else { // add number to map
+			numbersIndex[x[i]] = i
+		}
+	}
+	fmt.Println("No repeat found")
+	return 0
+}
 
+func CountNumDigits() {
 
+}
