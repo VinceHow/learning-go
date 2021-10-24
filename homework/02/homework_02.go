@@ -51,12 +51,11 @@ func main() {
 	countPeriodLessThanTen := 0
 	for _, value := range seedPeriodMap {
 		if value <= 10 {
-			countPeriodLessThanTen ++
+			countPeriodLessThanTen++
 		}
 	}
 	fmt.Printf("For seeds between 1 and 9999, there are %v number of seeds that have a period of less than or equal to 10. \n", countPeriodLessThanTen)
 	fmt.Println("The Middle-Square approach is very bad PRNG approach. Once a seed reaches a repeating loop, the period of repeat is very short.")
-
 
 }
 
@@ -442,19 +441,19 @@ func Pow10(x int) int {
 	return int(math.Pow10(x))
 }
 
-func SquareMiddle(seed int, numDigits int) int{
+func SquareMiddle(seed int, numDigits int) int {
 	/*
-	https://en.wikipedia.org/wiki/Middle-square_method
-	1. square x to get Y
-	2. we force Y to be 2N-digit number (where N is the desired number of digits, numDigits)
-		- if Y does not have 2N digits, we add leading zeroes to it to compensate (not literally, but effectively)
-	2. get the middle N digits of Y
-	 */
+		https://en.wikipedia.org/wiki/Middle-square_method
+		1. square x to get Y
+		2. we force Y to be 2N-digit number (where N is the desired number of digits, numDigits)
+			- if Y does not have 2N digits, we add leading zeroes to it to compensate (not literally, but effectively)
+		2. get the middle N digits of Y
+	*/
 	N := CountNumDigits(seed)
 	if N > numDigits {
 		panic("Seed has more digits than desired output.")
 	}
-	if numDigits % 2 != 0 {
+	if numDigits%2 != 0 {
 		panic("The desired number of digits in the output integer is not even.")
 	}
 	var Y = int(math.Pow(float64(seed), 2))
@@ -486,7 +485,7 @@ func evaluateSeedPeriod(seed int, numDigits int) int {
 
 func evaluateSeedPeriodInRange(lower int, upper int, numDigits int) map[int]int {
 	seedPeriodMap := make(map[int]int)
-	for i := lower; i <= upper; i ++ {
+	for i := lower; i <= upper; i++ {
 		seedPeriodMap[i] = evaluateSeedPeriod(i, numDigits)
 	}
 	return seedPeriodMap
