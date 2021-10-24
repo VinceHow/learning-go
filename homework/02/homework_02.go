@@ -47,15 +47,28 @@ func main() {
 	//SquareMiddle(4, 2)
 	//GenerateMiddleSquareSequence(3792,4)
 	//evaluateSeedPeriod(2345,4)
-	seedPeriodMap := evaluateSeedPeriodInRange(1, 9999, 4)
-	countPeriodLessThanTen := 0
-	for _, value := range seedPeriodMap {
-		if value <= 10 {
-			countPeriodLessThanTen++
-		}
-	}
-	fmt.Printf("For seeds between 1 and 9999, there are %v number of seeds that have a period of less than or equal to 10. \n", countPeriodLessThanTen)
-	fmt.Println("The Middle-Square approach is very bad PRNG approach. Once a seed reaches a repeating loop, the period of repeat is very short.")
+	//seedPeriodMap := evaluateSeedPeriodInRange(1, 9999, 4)
+	//countPeriodLessThanTen := 0
+	//for _, value := range seedPeriodMap {
+	//	if value <= 10 {
+	//		countPeriodLessThanTen++
+	//	}
+	//}
+	//fmt.Printf("For seeds between 1 and 9999, there are %v number of seeds that have a period of less than or equal to 10. \n", countPeriodLessThanTen)
+	//fmt.Println("The Middle-Square approach is very bad PRNG approach. Once a seed reaches a repeating loop, the period of repeat is very short.")
+
+	// #8
+	// running this section fried my computer, I will skip trying to compute the results
+	//seedPeriodMap := evaluateLinearCongruencePeriodInRange(1, 8190, 42, 0, 8191)
+	//countSeeds := 0
+	//for _, value := range seedPeriodMap {
+	//	if value == 8190 {
+	//		countSeeds++
+	//	}
+	//}
+	//fmt.Printf("For seed values of A between 1 and 8190, there are %v number of values that have a period of 8190. \n", countSeeds)
+
+	fmt.Println(evaluateLinearCongruencePeriod(1, 5, 1, 8192)) // period length = 8192
 
 }
 
@@ -487,6 +500,32 @@ func evaluateSeedPeriodInRange(lower int, upper int, numDigits int) map[int]int 
 	seedPeriodMap := make(map[int]int)
 	for i := lower; i <= upper; i++ {
 		seedPeriodMap[i] = evaluateSeedPeriod(i, numDigits)
+	}
+	return seedPeriodMap
+}
+
+func GenerateLinearCongruenceSequence(seed int, a int, c int, m int) []int {
+	var seq []int
+	newSeed := seed
+	seq = append(seq, newSeed)
+	for HasRepeat(seq) == false {
+		newSeed = (a*newSeed + c) % m
+		seq = append(seq, newSeed)
+	}
+	return seq
+}
+
+func evaluateLinearCongruencePeriod(seed int, a int, c int, m int) int {
+	seq := GenerateLinearCongruenceSequence(seed, a, c, m)
+	period := ComputePeriodLength(seq)
+	//fmt.Printf("Seed %v has a period of %v", seed, period)
+	return period
+}
+
+func evaluateLinearCongruencePeriodInRange(lowerA int, upperA int, seed int, c int, m int) map[int]int {
+	seedPeriodMap := make(map[int]int)
+	for a := lowerA; a <= upperA; a++ {
+		seedPeriodMap[a] = evaluateLinearCongruencePeriod(seed, a, c, m)
 	}
 	return seedPeriodMap
 }
