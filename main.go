@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // var types
 //
@@ -61,15 +63,40 @@ func main(){
 }
 */
 
-func zero_my_int(x *int) {
-	*x = 0
-}
 func main() {
-	x := 5
-	zero_my_int(&x)
-	if x == 0 {
-		fmt.Println("Successfully zeroed")
+	fmt.Println("Hello")
+	var a int = 9
+	b := "Hi"
+
+	fmt.Printf("Var a = %v\nVar b = %v", a ,b)
+
+	c := []int{1,2}
+	fmt.Printf("\nVar c = %v", c)
+
+	var d []int
+	d = []int{2,3}
+	d = append(d, 1)
+	fmt.Printf("\nVar d = %v\n", d)
+
+	if a >10 {
+		fmt.Println("1")
+	} else if a <=10 {
+		fmt.Println("2")
 	} else {
-		fmt.Println("x is still 5")
+		fmt.Println("error")
 	}
+
+	for i , v := range d {
+		fmt.Printf("%v, %v \n", i,v)
+	}
+
+	for i := 0; i < len(d); i += 1 {
+		fmt.Printf("%v, %v \n", i,d[i])
+	}
+
+
 }
+
+
+
+
