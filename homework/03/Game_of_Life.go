@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func test() {
+func main() {
 	var b board
 	b = append(b, []bool{true,false})
 	b = append(b, []bool{false,true})
@@ -17,9 +17,12 @@ func test() {
 	b2 = append(b2, []bool{false,false,false,false,false})
 	b2 = append(b2, []bool{false,false,false,false,false})
 	b2 = append(b2, []bool{false,true,true,true,false})
-	b2 = append(b2, []bool{false,false,true,true,true})
 	b2 = append(b2, []bool{false,false,false,false,false})
-	PrintBoards(PlayGoL(b2,5))
+	b2 = append(b2, []bool{false,false,false,false,false})
+	fmt.Printf("Gen 1 of a basic oscillator \n")
+	PrintBoard(b2)
+	fmt.Printf("Gen 2 of a basic oscillator \n")
+	PrintBoard(UpdateBoard(b2))
 }
 // We can think of a board as an array of arrays (2-dimensional array), with each bool representing the cell's state.
 // The board has r rows and c columns
@@ -29,7 +32,7 @@ func PlayGoL(initialBoard board, numGens int) []board{
 	var boards []board
 	boards = append(boards, initialBoard)
 	for i := 1; i <= numGens; i++ {
-		boards = append(boards, UpdateBoard(boards[i-1]))
+		boards[i] = UpdateBoard(boards[i-1])
 	}
 	return boards
 }
@@ -122,7 +125,6 @@ func InField(currentBoard board, row int, col int) bool {
 
 func PrintBoards(boards []board) {
 	for i := range boards {
-		fmt.Printf("Gen %v \n",i)
 		PrintBoard(boards[i])
 	}
 }
