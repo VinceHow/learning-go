@@ -5,44 +5,49 @@ import (
 )
 
 func main() {
-	var b board
-	b = append(b, []bool{true,false})
-	b = append(b, []bool{false,true})
+	var b Board
+	b = append(b, []bool{true, false})
+	b = append(b, []bool{false, true})
 	fmt.Printf("Gen 1 \n")
 	PrintBoard(b)
 	fmt.Printf("Gen 2 \n")
 	PrintBoard(UpdateBoard(b))
 
-	var b2 board
-	b2 = append(b2, []bool{false,false,false,false,false})
-	b2 = append(b2, []bool{false,false,false,false,false})
-	b2 = append(b2, []bool{false,true,true,true,false})
-	b2 = append(b2, []bool{false,false,false,false,false})
-	b2 = append(b2, []bool{false,false,false,false,false})
+	var b2 Board
+	b2 = append(b2, []bool{false, false, false, false, false})
+	b2 = append(b2, []bool{false, false, false, false, false})
+	b2 = append(b2, []bool{false, true, true, true, false})
+	b2 = append(b2, []bool{false, false, false, false, false})
+	b2 = append(b2, []bool{false, false, false, false, false})
 	fmt.Printf("Gen 1 of a basic oscillator \n")
 	PrintBoard(b2)
 	fmt.Printf("Gen 2 of a basic oscillator \n")
 	PrintBoard(UpdateBoard(b2))
-}
-// We can think of a board as an array of arrays (2-dimensional array), with each bool representing the cell's state.
-// The board has r rows and c columns
-type board [][]bool
 
-func PlayGoL(initialBoard board, numGens int) []board{
-	var boards []board
+	PrintBoards(PlayGoL(b2, 4))
+}
+
+// Board
+// We can think of a Board as an array of arrays (2-dimensional array), with each bool representing the cell's state.
+// The Board has r rows and c columns
+type Board [][]bool
+
+func PlayGoL(initialBoard Board, numGens int) []Board {
+	var boards []Board
 	boards = append(boards, initialBoard)
 	for i := 1; i <= numGens; i++ {
-		boards[i] = UpdateBoard(boards[i-1])
+		b := UpdateBoard(boards[i-1])
+		boards = append(boards, b)
 	}
 	return boards
 }
 
-func UpdateBoard(currentBoard board) board {
+func UpdateBoard(currentBoard Board) Board {
 	numRows := CountRows(currentBoard)
 	numCols := CountCols(currentBoard)
 	newBoard := InitializeBoard(numRows, numCols)
 	for rowIndex, row := range currentBoard { // loop through rows
-		for cellIndex, _ := range row { // loop through cells
+		for cellIndex := range row { // loop through cells
 			newBoard[rowIndex][cellIndex] = UpdateCell(currentBoard, rowIndex, cellIndex)
 		}
 	}
@@ -50,10 +55,10 @@ func UpdateBoard(currentBoard board) board {
 }
 
 func InitializeBoard(r int, c int) [][]bool {
-	var b board
-	for i := 1; i<= r; i++ {
+	var b Board
+	for i := 1; i <= r; i++ {
 		var row []bool
-		for i := 1; i<= c; i++ {
+		for i := 1; i <= c; i++ {
 			row = append(row, false)
 		}
 		b = append(b, row)
@@ -61,14 +66,13 @@ func InitializeBoard(r int, c int) [][]bool {
 	return b
 }
 
-
-func CountRows(x board) int {
+func CountRows(x Board) int {
 	return len(x)
 }
 
-func CountCols(x board) int {
+func CountCols(x Board) int {
 	var cellsInRow []int
-	for _, row := range x{
+	for _, row := range x {
 		cellsInRow = append(cellsInRow, len(row))
 	}
 	columns := cellsInRow[0]
@@ -81,7 +85,7 @@ func CountCols(x board) int {
 	return columns
 }
 
-func UpdateCell(currentBoard board, row int, col int) bool {
+func UpdateCell(currentBoard Board, row int, col int) bool {
 	numNeighbors := CountLiveNeighbors(currentBoard, row, col)
 	// apply rules when current cell is alive
 	if currentBoard[row][col] {
@@ -90,7 +94,7 @@ func UpdateCell(currentBoard board, row int, col int) bool {
 		} else { // lack of mates / overpopulation the cell dies
 			return false
 		}
-	} else { // the cell is currently dead
+	} else {                   // the cell is currently dead
 		if numNeighbors == 3 { // birth to new life
 			return true
 		} else { // remain dead
@@ -99,10 +103,10 @@ func UpdateCell(currentBoard board, row int, col int) bool {
 	}
 }
 
-func CountLiveNeighbors(currentBoard board, row int, col int) int {
+func CountLiveNeighbors(currentBoard Board, row int, col int) int {
 	count := 0
-	for r := row-1; r <= row+1; r++ { // we loop through every eligible row
-		for c := col-1; c <= col+1; c++ { // and eligible column
+	for r := row - 1; r <= row+1; r++ { // we loop through every eligible row
+		for c := col - 1; c <= col+1; c++ { // and eligible column
 			if !(r == row && c == col) && InField(currentBoard, r, c) { // excluding the current cell, and the neighbor is on the board
 				if currentBoard[r][c] { // neighbor is alive
 					count++
@@ -113,23 +117,23 @@ func CountLiveNeighbors(currentBoard board, row int, col int) int {
 	return count
 }
 
-func InField(currentBoard board, row int, col int) bool {
+func InField(currentBoard Board, row int, col int) bool {
 	numRows := CountRows(currentBoard)
 	numCols := CountCols(currentBoard)
-	if row < 0 || row > (numRows-1) || col <0 || col >(numCols-1) {
+	if row < 0 || row > (numRows-1) || col < 0 || col > (numCols-1) {
 		return false
-	}else {
+	} else {
 		return true
 	}
 }
 
-func PrintBoards(boards []board) {
+func PrintBoards(boards []Board) {
 	for i := range boards {
 		PrintBoard(boards[i])
 	}
 }
 
-func PrintBoard(b board) {
+func PrintBoard(b Board) {
 	for i := range b {
 		PrintRow(b[i])
 	}
